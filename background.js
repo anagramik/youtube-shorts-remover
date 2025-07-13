@@ -1,8 +1,18 @@
 chrome.runtime.onMessage.addListener((message, sender) => {
   if (message.type === "redirectToBlockPage") {
     if (sender.tab && sender.tab.id) {
-      chrome.tabs.update(sender.tab.id, {
-        url: chrome.runtime.getURL("block.html")
+      const blockUrl = chrome.runtime.getURL("block.html");
+      
+      // Use location.replace to avoid adding to history
+      chrome.scripting.executeScript({
+        target: { tabId: sender.tab.id },
+        func: (url) => {
+          window.location.replace(url);
+        },
+        args: [blockUrl]
+      }).catch(() => {
+        // Fallback to regular tab update if scripting fails
+        chrome.tabs.update(sender.tab.id, { url: blockUrl });
       });
       
       chrome.storage.sync.get("stats", (data) => {

@@ -1,3 +1,4 @@
+// Handle the return button click
 document.getElementById('returnBtn').addEventListener('click', () => {
-  chrome.tabs.update({ url: "https://www.youtube.com" });
+  window.location.href = "https://www.youtube.com";
 });
