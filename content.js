@@ -1,5 +1,5 @@
 function removeShorts() {
-  chrome.storage.sync.get("enabled", (data) => {
+  chrome.storage.sync.get(["enabled", "stats"], (data) => {
     if (!data.enabled) return;
 
     const selectors = [
@@ -12,9 +12,28 @@ function removeShorts() {
       'ytd-thumbnail-overlay-time-status-renderer[overlay-style="SHORTS"]'
     ];
 
+    let removedCount = 0;
     selectors.forEach(selector => {
-      document.querySelectorAll(selector).forEach(el => el.remove());
+      const elements = document.querySelectorAll(selector);
+      removedCount += elements.length;
+      elements.forEach(el => el.remove());
     });
+
+    if (removedCount > 0) {
+      const stats = data.stats || {};
+      stats.removedElements = (stats.removedElements || 0) + removedCount;
+      stats.lastActivity = Date.now();
+      
+      if (!stats.recentActivity) stats.recentActivity = [];
+      const timeStr = new Date().toLocaleTimeString();
+      stats.recentActivity.push(`${timeStr}: Removed ${removedCount} shorts elements`);
+      
+      if (stats.recentActivity.length > 10) {
+        stats.recentActivity = stats.recentActivity.slice(-10);
+      }
+      
+      chrome.storage.sync.set({ stats });
+    }
   });
 }
 

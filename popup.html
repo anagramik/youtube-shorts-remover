@@ -2,13 +2,149 @@
 <html>
 <head>
   <style>
-    body { font-family: sans-serif; padding: 10px; }
-    button { padding: 6px 12px; cursor: pointer; }
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
+      margin: 0;
+      padding: 0;
+      width: 300px;
+      background: #f8f9fa;
+    }
+    
+    .header {
+      background: #1a73e8;
+      color: white;
+      padding: 16px;
+      text-align: center;
+    }
+    
+    .header h1 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 500;
+    }
+    
+    .content {
+      padding: 16px;
+    }
+    
+    .status-card {
+      background: white;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    
+    .status-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+    
+    .status-dot.active {
+      background: #34a853;
+      box-shadow: 0 0 6px rgba(52, 168, 83, 0.3);
+    }
+    
+    .status-dot.inactive {
+      background: #ea4335;
+    }
+    
+    .toggle-button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .toggle-button.enabled {
+      background: #ea4335;
+      color: white;
+    }
+    
+    .toggle-button.enabled:hover {
+      background: #d33b2c;
+    }
+    
+    .toggle-button.disabled {
+      background: #34a853;
+      color: white;
+    }
+    
+    .toggle-button.disabled:hover {
+      background: #2d8f47;
+    }
+    
+    .stats {
+      font-size: 12px;
+      color: #5f6368;
+      margin-top: 12px;
+    }
+    
+    .stats-row {
+      display: flex;
+      justify-content: space-between;
+      margin: 4px 0;
+    }
+    
+    .activity-log {
+      max-height: 100px;
+      overflow-y: auto;
+      font-size: 11px;
+      color: #5f6368;
+      border-top: 1px solid #e8eaed;
+      padding-top: 8px;
+      margin-top: 8px;
+    }
+    
+    .activity-item {
+      margin: 2px 0;
+    }
   </style>
 </head>
 <body>
-  <p><strong>YouTube Shorts:</strong></p>
-  <button id="toggle">Loading...</button>
+  <div class="header">
+    <h1>YouTube Shorts Remover</h1>
+  </div>
+  
+  <div class="content">
+    <div class="status-card">
+      <div class="status-indicator">
+        <div id="statusDot" class="status-dot"></div>
+        <span id="statusText">Loading...</span>
+      </div>
+      
+      <button id="toggle" class="toggle-button">Loading...</button>
+      
+      <div class="stats">
+        <div class="stats-row">
+          <span>Elements removed:</span>
+          <span id="removedCount">-</span>
+        </div>
+        <div class="stats-row">
+          <span>Redirects blocked:</span>
+          <span id="redirectCount">-</span>
+        </div>
+        <div class="stats-row">
+          <span>Last activity:</span>
+          <span id="lastActivity">-</span>
+        </div>
+      </div>
+      
+      <div id="activityLog" class="activity-log"></div>
+    </div>
+  </div>
 
   <script src="popup.js"></script>
 </body>
